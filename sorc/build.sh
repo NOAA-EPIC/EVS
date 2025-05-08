@@ -14,11 +14,12 @@ export EXECevs=${EXECevs:-${pkg_root}/exec}
 source ${pkg_root}/versions/build.ver
 set +x
 module reset
+module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
 module load PrgEnv-intel/${PrgEnvintel_ver}
-module load intel/${intel_ver}
+module load stack-intel/${intel_ver}
 module load craype/${craype_ver}
-module load cray-mpich/${craympich_ver}
-module load cray-pals/${craypals_ver}
+module load stack-cray-mpich/${craympich_ver}
+#module load cray-pals/${craypals_ver}
 module load bacio/${bacio_ver}
 module load w3emc/${w3emc_ver}
 module load ip/${ip_ver}
@@ -56,7 +57,8 @@ else
 fi
 
 # Build
-for code in ecm_gfs_look_alike_new jma_merge ukm_hires_merge pcpconform sref_precip evs_g2g_adjustCMC; do
+#for code in ecm_gfs_look_alike_new jma_merge ukm_hires_merge pcpconform sref_precip evs_g2g_adjustCMC; do
+for code in ecm_gfs_look_alike_new ; do
 
   cd "${pkg_root}/sorc/${code}.fd"
   if [ ${BUILD_CLEAN} = "YES" ]; then
