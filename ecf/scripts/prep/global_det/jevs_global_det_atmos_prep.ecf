@@ -1,16 +1,16 @@
 #!/bin/bash
-#SBATCH --job-name=evs_global_det_atmos_prep
-#SBATCH --output evs_global_det_atmos_prep.txt
-#SBATCH --error=output
-#SBATCH --qos=normal
-#SBATCH --account=bil-fire8
-#SBATCH -t 00:10:00
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=1
-#SBATCH --verbose
-#SBATCH --partition=batch
-#SBATCH --exclusive --clusters=c6
+##SBATCH --job-name=evs_global_det_atmos_prep
+##SBATCH --output evs_global_det_atmos_prep.txt
+##SBATCH --error=output
+##SBATCH --qos=normal
+##SBATCH --account=bil-fire8
+##SBATCH -t 00:10:00
+##SBATCH --nodes=1
+##SBATCH --tasks-per-node=1
+##SBATCH --cpus-per-task=1
+##SBATCH --verbose
+##SBATCH --partition=batch
+##SBATCH --exclusive --clusters=c6
 
 ##PBS -N evs_global_det_atmos_prep
 ##PBS -j oe
@@ -27,6 +27,7 @@ export model=evs
 export COMROOT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comroot
 export DATAROOT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/stmp
 export HOMEevs=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/apr28/EVS
+export WGRIB=/sw/gaea-c6/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/wgrib-1.8.1.2c-wsih53sjs2vcgsdabiyxcwgum73zp5y2/bin/wgrib
 export jobid=${jobid:-${SLURM_JOB_NAME}.${SLURM_JOB_ID}}
 export PDY=20230220
 export KEEPDATA=YES
