@@ -1,39 +1,15 @@
-#!/bin/bash
-##PBS -N evs_global_det_atmos_prep
-##PBS -j oe
-##PBS -S /bin/bash
-##PBS -q %QUEUE%
-##PBS -A %PROJ%-%PROJENVIR%
-##PBS -l walltime=00:45:00
-##PBS -l place=shared,select=1:ncpus=1:mem=100GB
-##PBS -l debug=true
-
-#SBATCH --job-name=evs_global_det_atmos_prep
-#SBATCH --output evs_global_det_atmos_prep.txt
-#SBATCH --error=output
-#SBATCH --qos=normal
-#SBATCH --account=bil-fire8
-#SBATCH -t 00:10:00
-#SBATCH --nodes=1
-#SBATCH --tasks-per-node=1
-#SBATCH --cpus-per-task=1
-#SBATCH --verbose
-#SBATCH --partition=batch
-#SBATCH --exclusive --clusters=c6
+#PBS -N evs_global_det_atmos_prep
+#PBS -j oe
+#PBS -S /bin/bash
+#PBS -q %QUEUE%
+#PBS -A %PROJ%-%PROJENVIR%
+#PBS -l walltime=00:45:00
+#PBS -l place=shared,select=1:ncpus=1:mem=100GB
+#PBS -l debug=true
 
 export model=evs
-#%include <head.h>
-#%include <envir-p1.h>
-export COMROOT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comroot
-export DATAROOT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/stmp
-export HOMEevs=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/apr28/EVS
-export WGRIB=/sw/gaea-c6/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/wgrib-1.8.1.2c-wsih53sjs2vcgsdabiyxcwgum73zp5y2/bin/wgrib
-export jobid=${jobid:-${SLURM_JOB_NAME}.${SLURM_JOB_ID}}
-export PDY=20230220
-export KEEPDATA=YES
-source ${HOMEevs}/versions/run.ver
-
-mkdir -p /gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comroot 
+%include <head.h>
+%include <envir-p1.h>
 
 ############################################################
 # Load modules
@@ -42,21 +18,18 @@ set -x
 export COMPONENT=global_det
 export STEP=prep
 
-module reset
-module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/Core
 module load PrgEnv-intel/${PrgEnvintel_ver}
-module load stack-intel/${intel_ver}
-module load stack-cray-mpich/8.1.29
-#module load ve/evs/${ve_evs_ver}
+module load intel/${intel_ver}
+module load ve/evs/${ve_evs_ver}
 module load gsl/${gsl_ver}
-module load netcdf-c/${netcdf_ver}
-#module load cray-pals/${craypals_ver}
+module load netcdf/${netcdf_ver}
+module load cray-pals/${craypals_ver}
 module load libjpeg/${libjpeg_ver}
 module load libpng/${libpng_ver}
 module load zlib/${zlib_ver}
 module load jasper/${jasper_ver}
 module load udunits/${udunits_ver}
-module load grib-util/${grib_util_ver}
+module load grib_util/${grib_util_ver}
 module load wgrib2/${wgrib2_ver}
 module load cdo/${cdo_ver}
 module load udunits/${udunits_ver}
@@ -64,16 +37,13 @@ module load nco/${nco_ver}
 module load met/${met_ver}
 module load metplus/${metplus_ver}
 module load bufr/${bufr_ver}
-module load prod_util
 module list
-export METPLUS_PATH=${metplus_ROOT}
 
 ############################################################
 # Specify environment variables
 ############################################################
-#if [ -n "%VHR:%" ]; then
-if [ -n "${vhr}" ]; then
-  export vhr=${vhr:-${vhr}}
+if [ -n "%VHR:%" ]; then
+  export vhr=${vhr:-%VHR:%}
 else
   export vhr=00
 fi
@@ -86,17 +56,12 @@ export OBSNAME="osi_saf ghrsst_ospo"
 # Execute j-job
 ############################################################
 $HOMEevs/jobs/JEVS_GLOBAL_DET_PREP
-err=$?
-if [ "${err}" != 0 ]; then
-  echo "failure $HOMEevs/jobs/JEVS_GLOBAL_DET_PREP with rc=${err}"
-  exit ${err} 
+if [ $? -ne 0 ]; then
+   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
+   ecflow_client --abort
+   exit
 fi
-#if [ $? -ne 0 ]; then
-#   ecflow_client --msg="***JOB ${ECF_NAME} ERROR RUNNING J-SCRIPT ***"
-#   ecflow_client --abort
-#   exit
-#fi
 
-#%include <tail.h>
-#%manual
-#%end
+%include <tail.h>
+%manual
+%end
