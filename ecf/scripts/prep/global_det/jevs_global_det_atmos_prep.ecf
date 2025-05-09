@@ -1,16 +1,16 @@
 #!/bin/bash
-##SBATCH --job-name=evs_global_det_atmos_prep
-##SBATCH --output evs_global_det_atmos_prep.txt
-##SBATCH --error=output
-##SBATCH --qos=normal
-##SBATCH --account=bil-fire8
-##SBATCH -t 00:10:00
-##SBATCH --nodes=1
-##SBATCH --tasks-per-node=1
-##SBATCH --cpus-per-task=1
-##SBATCH --verbose
-##SBATCH --partition=batch
-##SBATCH --exclusive --clusters=c6
+#SBATCH --job-name=evs_global_det_atmos_prep
+#SBATCH --output evs_global_det_atmos_prep.txt
+#SBATCH --error=output
+#SBATCH --qos=normal
+#SBATCH --account=bil-fire8
+#SBATCH -t 00:10:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --verbose
+#SBATCH --partition=batch
+#SBATCH --exclusive --clusters=c6
 
 ##PBS -N evs_global_det_atmos_prep
 ##PBS -j oe
