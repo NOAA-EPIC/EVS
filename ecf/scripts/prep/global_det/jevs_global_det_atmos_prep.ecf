@@ -1,4 +1,13 @@
 #!/bin/bash
+##PBS -N evs_global_det_atmos_prep
+##PBS -j oe
+##PBS -S /bin/bash
+##PBS -q %QUEUE%
+##PBS -A %PROJ%-%PROJENVIR%
+##PBS -l walltime=00:45:00
+##PBS -l place=shared,select=1:ncpus=1:mem=100GB
+##PBS -l debug=true
+
 #SBATCH --job-name=evs_global_det_atmos_prep
 #SBATCH --output evs_global_det_atmos_prep.txt
 #SBATCH --error=output
@@ -11,15 +20,6 @@
 #SBATCH --verbose
 #SBATCH --partition=batch
 #SBATCH --exclusive --clusters=c6
-
-##PBS -N evs_global_det_atmos_prep
-##PBS -j oe
-##PBS -S /bin/bash
-##PBS -q %QUEUE%
-##PBS -A %PROJ%-%PROJENVIR%
-##PBS -l walltime=00:45:00
-##PBS -l place=shared,select=1:ncpus=1:mem=100GB
-##PBS -l debug=true
 
 export model=evs
 #%include <head.h>
