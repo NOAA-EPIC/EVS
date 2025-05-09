@@ -10,6 +10,7 @@
 ###
 ###   01/16/2024   Ho-Chun Huang  EVSv1.0 EE2 compliance
 ###   01/30/2024   Ho-Chun Huang  for a single email of missing files of both OBS and FCST
+###   05/01/2025   Ho-Chun Huang  Remove email function for missing model forecast output
 ###
 ########################################################################
 #
@@ -54,27 +55,22 @@ for OBTTYPE in ${obstype}; do
                             cp -v ${cpfile} ${COMOUTprep}
                         fi
                     fi
-                else
-                    echo "DEBUG: can not find ${prep_config_file}"
                 fi
             else
                 if [ ${SENDMAIL} = "YES" ]; then
-                    echo "DEBUG : There is no valid record to be processed for ${checkfile}" >> mailmsg
-                    echo "File in question is ${checkfile}" >> mailmsg
+                    echo "WARNING: There is no valid record to be processed, ${MODELNAME} ${RUN} ${STEP} will skip ${checkfile}" >> mailmsg
                     echo "==============" >> mailmsg
                     flag_send_message=YES
                 fi
-                echo "DEBUG : There is no valid record to be processed for ${checkfile}"
+                echo "WARNING: There is no valid record to be processed, ${MODELNAME} ${RUN} ${STEP} will skip ${checkfile}"
             fi
         else
             if [ ${SENDMAIL} = "YES" ]; then
-                echo "DEBUG: No AERONET Level 1.5 data was available for valid date ${INITDATE}" >> mailmsg
-                echo "Missing file is ${checkfile}" >> mailmsg
+                echo "WARNING: ${checkfile} is missing, ${MODELNAME} ${RUN} ${STEP} will skip this file for valid date ${INITDATE}" >> mailmsg
                 echo "==============" >> mailmsg
                 flag_send_message=YES
             fi
-            echo "DEBUG: No AERONET Level 1.5 data was available for valid date ${INITDATE}"
-            echo "DEBUG: Missing file is ${checkfile}"
+            echo "WARNING: ${checkfile} is missing, ${MODELNAME} ${RUN} ${STEP} will skip this file for valid date ${INITDATE}"
         fi
     elif [ "${OBTTYPE}" == "airnow" ]; then
         airnow_hourly_type="aqobs"
@@ -112,28 +108,23 @@ for OBTTYPE in ${obstype}; do
                             cpfile=${finalprep}/airnow_hourly_aqobs_${INITDATE}${VHOUR}.nc 
                             if [ -e ${cpfile} ]; then cp -v ${cpfile} ${COMOUTprep}; fi
                         fi
-                    else
-                        echo "DEBUG: can not find ${prep_config_file}"
                     fi
                 else
                     if [ ${SENDMAIL} = "YES" ]; then
-                        echo "DEBUG : There is no valid record to be processed for ${checkfile}" >> mailmsg
-                        echo "File in question is ${checkfile}" >> mailmsg
+                        echo "WARNING: There is no valid record to be processed, ${MODELNAME} ${RUN} ${STEP} will skip the ${checkfile}" >> mailmsg
                         echo "==============" >> mailmsg
                         flag_send_message=YES
                     fi
-                    echo "DEBUG : There is no valid record to be processed for ${checkfile}"
+                    echo "WARNING: There is no valid record to be processed, ${MODELNAME} ${RUN} ${STEP} will skip the ${checkfile}"
                 fi
             else
                 if [ ${SENDMAIL} = "YES" ]; then
-                    echo "DEBUG: No AIRNOW ASCII data was available for valid date ${INITDATE}${vldhr}" >> mailmsg
-                    echo "Missing file is ${checkfile}" >> mailmsg
+                    echo "WARNING: ${checkfile} is missing, ${MODELNAME} ${RUN} ${STEP} will skip this file for valid date ${INITDATE}" >> mailmsg
                     echo "==============" >> mailmsg
                     flag_send_message=YES
                 fi
         
-                echo "DEBUG: No AIRNOW ASCII data was available for valid date ${INITDATE}${vldhr}"
-                echo "DEBUG: Missing file is ${checkfile}"
+                echo "WARNING: ${checkfile} is missing, ${MODELNAME} ${RUN} ${STEP} will skip this file for valid date ${INITDATE}"
             fi
             ((ic++))
         done
@@ -187,24 +178,12 @@ for mdl_cyc in "${cyc_opt[@]}"; do
                     cp -v ${reduced_rec_grib2} ${prep_gefs}
                 fi
             else
-                if [ ${SENDMAIL} = "YES" ]; then
-                    echo "DEBUG: Can not find GEFS-aerosol forecast output" >> mailmsg
-                    echo "Missing file is ${check_full_file}" >> mailmsg
-                    echo "==============" >> mailmsg
-                    flag_send_message=YES
-                fi
-                echo "DEBUG: Can not find GEFS-aerosol forecast output" >> mailmsg
-                echo "Missing file is ${check_full_file}" >> mailmsg
+                echo "FCST_OUTPUT_MISSING: GEFS-aerosol forecast file ${check_full_file} is missing. The missing GEFS-aerosol forecast file will be skipped"
             fi
             ((hour_now+=${inc}))
         done
     else
-        if [ ${SENDMAIL} = "YES" ]; then
-            echo "DEBUG: Can not find GEFS-aerosol output directory ${com_gefs}" >> mailmsg
-            echo "==============" >> mailmsg
-            flag_send_message=YES
-        fi
-        echo "DEBUG: Can not find GEFS-aerosol output directory ${com_gefs}" >> mailmsg
+        echo "FCST_OUTPUT_MISSING: GEFS-aerosol output directory ${com_gefs} is missing. The missing GEFS-aerosol forecast files will be skipped"
     fi
 done
 #
