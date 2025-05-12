@@ -1,16 +1,16 @@
 #!/bin/bash
-##SBATCH --job-name=evs_global_det_atmos_prep
-##SBATCH --output evs_global_det_atmos_prep.txt
-##SBATCH --error=output
-##SBATCH --qos=normal
-##SBATCH --account=bil-fire8
-##SBATCH -t 00:10:00
-##SBATCH --nodes=1
-##SBATCH --tasks-per-node=1
-##SBATCH --cpus-per-task=1
-##SBATCH --verbose
-##SBATCH --partition=batch
-##SBATCH --exclusive --clusters=c6
+#SBATCH --job-name=evs_global_det_atmos_prep
+#SBATCH --output evs_global_det_atmos_prep.txt
+#SBATCH --error=output
+#SBATCH --qos=normal
+#SBATCH --account=bil-fire8
+#SBATCH -t 00:10:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --verbose
+#SBATCH --partition=batch
+#SBATCH --exclusive --clusters=c6
 
 ##PBS -N jevs_global_det_atmos_prep_00
 ##PBS -j oe
@@ -37,7 +37,7 @@ export KEEPDATA=YES
 export job=${SLURM_JOB_NAME:-jevs_global_det_atmos_prep}
 export jobid=$job.${SLURM_JOB_ID:-$$}
 export SITE=$(cat /etc/cluster_name)
-export vhr=00
+export vhr=12
 
 source $HOMEevs/versions/run.ver
 module reset
@@ -61,12 +61,12 @@ export RUN=atmos
 #export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d
 #export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/$COMPONENT/$RUN
 
-export COMIN=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comin/$NET/$evs_ver_2d
+export COMIN=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comout/$NET/$evs_ver_2d
 export COMOUT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comout/$NET/$evs_ver_2d/$STEP/$COMPONENT/$RUN
 export DATAROOT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/stmp
 export COMROOT=/gpfs/f6/bil-fire8/scratch/David.Burrows/evs/comroot
 export TMPDIR=${DATAROOT}
-export PDY=20230221
+export PDY=20210324
 export CDATE=${PDY}${vhr}
 
 export MODELNAME="gfs"

@@ -67,6 +67,7 @@ export COMINgfs=${COMINgfs:-/gpfs/f6/bil-fire8/world-shared/David.Burrows/anil_e
 export COMINccpa=${COMINccpa:-$(compath.py $envir/ccpa/$ccpa_ver)}
 #export COMINobsproc=${COMINobsproc:-$(compath.py $envir/obsproc/$obsproc_ver)}
 export COMINobsproc=/gpfs/f6/drsa-precip3/world-shared/role.glopara/dump
+export COMINobsproc=/gpfs/f6/bil-fire8/world-shared/David.Burrows/anil_evs/dump
 export DCOMINnohrsc=${DCOMINnohrsc:-$DCOMROOT}
 export COMOUT=${COMOUT:-$(compath.py -o $NET/$evs_ver/$STEP/$COMPONENT)}
 export COMOUTsmall=$COMOUT/$RUN.$VDATE/$MODELNAME/$VERIF_CASE
