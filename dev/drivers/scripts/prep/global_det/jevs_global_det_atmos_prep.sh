@@ -1,11 +1,11 @@
-#PBS -N jevs_global_det_atmos_prep_00
-#PBS -j oe
-#PBS -S /bin/bash
-#PBS -q dev
-#PBS -A VERF-DEV
-#PBS -l walltime=00:45:00
-#PBS -l place=exclhost,select=1:ncpus=1:mem=100GB
-#PBS -l debug=true
+##PBS -N jevs_global_det_atmos_prep_00
+##PBS -j oe
+##PBS -S /bin/bash
+##PBS -q dev
+##PBS -A VERF-DEV
+##PBS -l walltime=00:45:00
+##PBS -l place=exclhost,select=1:ncpus=1:mem=100GB
+##PBS -l debug=true
 
 set -x 
 
