@@ -40,7 +40,6 @@ export w3emc_ver=2.10.0
 export wgrib2_ver=2.0.8
 export zlib_ver=1.2.13
 
-
 export aqm_ver=v7.0
 export ccpa_ver=v4.2
 export cfs_ver=v2.3
@@ -67,4 +66,3 @@ export sref_ver=v7.1
 export st4_ver=v4.1
 export urma_ver=v2.10
 export wafs_ver=v7.0
-

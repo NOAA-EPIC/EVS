@@ -66,7 +66,8 @@ export COMINcmc=${COMINcmc:-$COMROOTDATA/${envir}/cmc/$cmc_ver/cmc.$INITDATE}
 export COMINgfs=${COMINgfs:-$COMROOTDATA/${envir}/gfs/$gfs_ver/gfs.$INITDATE}
 export COMINccpa=${COMINccpa:-$COMROOTDATA/${envir}/ccpa/$ccpa_ver}
 export COMINobsproc=${COMINobsproc:-$COMROOTOBS/gdas.$INITDATE}
-
+#export COMINobsproc=/gpfs/f6/drsa-precip3/world-shared/role.glopara/dump
+#export COMINobsproc=/gpfs/f6/bil-fire8/world-shared/David.Burrows/anil_evs/dump
 #export COMIN=${COMIN:-$(compath.py ${envir}/com/$NET/$evs_ver)}
 #export COMINcfs=${COMINcfs:-$(compath.py $envir/cfs/$cfs_ver/cfs.$INITDATE)}
 #export COMINcmc=${COMINcmc:-$(compath.py $envir/cmc/$cmc_ver/cmc.$INITDATE)}
@@ -91,7 +92,7 @@ export DCOMINghrsst_ospo=${DCOMINghrsst_ospo:-$DCOMROOT}
 export DCOMINndbc=${DCOMINndbc:-$DCOMROOT}
 export DCOMINjason3=${DCOMINjason3:-$DCOMROOT}
 #export COMOUT=${COMOUT:-$(compath.py -o $NET/$evs_ver/$STEP/$COMPONENT/$RUN)}
-export COMOUT=${COMOUT:-/gpfs/f6/bil-fire8/scratch/Anil.Kumar/stmp2/$NET/$evs_ver/$STEP/$COMPONENT/$RUN}
+export COMOUT=${COMOUT:-/gpfs/f6/bil-fire8/scratch/Anil.Kumar/evs-out/$NET/$evs_ver/$STEP/$COMPONENT/$RUN}
 mkdir -p $COMOUT.${INITDATE}
 for mname in $MODELNAME; do
     mkdir -p $COMOUT.$INITDATE/$mname
