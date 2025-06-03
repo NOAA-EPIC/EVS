@@ -26,7 +26,7 @@ set -x
 cd $PBS_O_WORKDIR
 
 export model=evs
-export HOMEevs=/gpfs/f6/bil-fire8/scratch/$USER/EVS
+export HOMEevs=/home/$USER/EVS
 
 export SENDCOM=YES
 export SENDMAIL=NO
@@ -53,10 +53,10 @@ export STEP=prep
 export COMPONENT=global_det
 export RUN=atmos
 
-export COMIN=/gpfs/f6/bil-fire8/scratch/$USER/evs-out/comout/$NET/$evs_ver_2d
-export COMOUT=/gpfs/f6/bil-fire8/scratch/$USER/evs-out/comout/$NET/$evs_ver_2d/$STEP/$COMPONENT/$RUN
-export DATAROOT=/gpfs/f6/bil-fire8/scratch/$USER/evs-out/stmp
-export COMROOT=/gpfs/f6/bil-fire8/scratch/$USER/evs-out/comroot
+export COMIN=/home/$USER/evs-out/comout/$NET/$evs_ver_2d
+export COMOUT=/home/$USER/evs-out/comout/$NET/$evs_ver_2d/$STEP/$COMPONENT/$RUN
+export DATAROOT=/home/$USER/evs-out/stmp
+export COMROOT=/home/$USER/evs-out/comroot
 export TMPDIR=${DATAROOT}
 export PDY=20210324
 export CDATE=${PDY}${vhr}

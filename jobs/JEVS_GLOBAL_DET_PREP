@@ -56,8 +56,8 @@ export SENDMAIL=${SENDMAIL:-NO}
 ####################################
 # Define COMIN/COMOUT variables
 ####################################
-export COMROOTDATA=${COMROOTDATA:-/gpfs/f6/bil-fire8/world-shared/David.Burrows/anil_evs}
-export COMROOTOBS=${COMROOTOBS:-/gpfs/f6/drsa-precip3/world-shared/role.glopara/dump}
+export COMROOTDATA=${COMROOTDATA:-/home/$USER/evscom}
+export COMROOTOBS=${COMROOTOBS:-https://noaa-reanalyses-pds.s3.amazonaws.com/index.html#observations/reanalysis/conv/prepbufr/}
 
 
 export COMIN=${COMIN:-$COMROOTDATA/${envir}/com/$NET/$evs_ver}
@@ -92,7 +92,7 @@ export DCOMINghrsst_ospo=${DCOMINghrsst_ospo:-$DCOMROOT}
 export DCOMINndbc=${DCOMINndbc:-$DCOMROOT}
 export DCOMINjason3=${DCOMINjason3:-$DCOMROOT}
 #export COMOUT=${COMOUT:-$(compath.py -o $NET/$evs_ver/$STEP/$COMPONENT/$RUN)}
-export COMOUT=${COMOUT:-/gpfs/f6/bil-fire8/scratch/Anil.Kumar/evs-out/$NET/$evs_ver/$STEP/$COMPONENT/$RUN}
+export COMOUT=${COMOUT:-/home/$USER/evscom/$NET/$evs_ver/$STEP/$COMPONENT/$RUN}
 mkdir -p $COMOUT.${INITDATE}
 for mname in $MODELNAME; do
     mkdir -p $COMOUT.$INITDATE/$mname
