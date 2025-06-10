@@ -3,31 +3,75 @@
 
 set -x
 
-#module use /apps/ops/para/libs/modulefiles/compiler/intel/${intel_ver}
-module use /ncrc/proj/epic/spack-stack/c6/spack-stack-1.6.0/envs/fms-2024.01/install/modulefiles/intel/${intel_ver}
-#export HPC_OPT=/apps/ops/para/libs
-#module use /apps/dev/modulefiles
-module load PrgEnv-intel/${PrgEnvintel_ver}
-module load stack- intel/${intel_ver}
-module load ve/evs/${ve_evs_ver}
-module load gsl/${gsl_ver}
-module load netcdf/${netcdf_ver}
-#module load cray-pals/${craypals_ver}
-module load prod_util/${prod_util_ver}
-module load cfp/${cfp_ver}
-module load libjpeg/${libjpeg_ver}
-module load libpng/${libpng_ver}
-module load zlib/${zlib_ver}
-module load jasper/${jasper_ver}
-module load udunits/${udunits_ver}
-module load grib_util/${grib_util_ver}
-module load wgrib2/${wgrib2_ver}
-module load imagemagick/${imagemagick_ver}
-module load met/${met_ver}
-module load metplus/${metplus_ver}
+### 2. INITIALIZATION ###
+export HPC_OPT="/opt/libs"
+export LOG_FILE="/tmp/global_det_prep_$(date +%Y%m%d).log"
+exec > >(tee -a ${LOG_FILE}) 2>&1
+echo "EVS global_det prep step - $(date)"
+
+### 3. LOAD COMPILER ###
+if [ -f "$HOME/spack/share/spack/setup-env.sh" ]; then
+    source "$HOME/spack/share/spack/setup-env.sh"
+    spack load intel-oneapi-compilers@${intel_ver}
+    echo "Loaded Intel compiler via Spack"
+elif [ -f "/opt/intel/oneapi/compiler/${intel_ver}/env/vars.sh" ]; then
+    source "/opt/intel/oneapi/compiler/${intel_ver}/env/vars.sh"
+    echo "Loaded Intel compiler from OneAPI installation"
+else
+    echo "ERROR: Intel compiler not found"
+    exit 1
+fi
+
+### 4. LOAD COMPONENTS ###
+# Load Spack-managed packages
+spack load gsl@${gsl_ver}
+spack load netcdf-c@${netcdf_ver}
+spack load netcdf-fortran@${netcdf_fortran_ver}
+spack load openmpi@5.0.7               # Replaces cray-pals
+spack load prod-util@${prod_util_ver}
+spack load jasper@${jasper_ver}
+spack load grib-util@${grib_util_ver}
+spack load cdo@${cdo_ver}
+spack load nco@${nco_ver}
+
+# System libraries
+export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"  # For libjpeg, libpng, etc.
+
+# Special cases
+export PATH="/home/anilk/grib2:$PATH"           # wgrib2
+export PATH="/home/anilk/bufrlib/bin:$PATH"     # BUFRLIB
+export PATH="/home/anilk/met/${met_ver}/bin:$PATH"       # MET
+export PATH="/home/anilk/METplus/bin:$PATH"     # METplus
 
 export SIPHONROOT=${UTILROOT}/fakedbn
 export DBNROOT=$SIPHONROOT
+
+### 5. VERIFICATION ###
+echo -e "\n=== LOADED COMPONENTS ==="
+{
+    echo "Compiler: $(ifx --version | head -1)"
+    echo "GSL: $(gsl-config --version)"
+    echo "NetCDF: $(nc-config --version)"
+    echo "NetCDF-Fortran: $(nf-config --version || echo 'Not found')"
+    echo "MPI: $(mpirun --version | head -1)"
+    echo "prod_util: $(which prod_util_executable || echo 'Not found')"  # Replace with actual command
+    echo "wgrib2: $(wgrib2 -config 2>&1 | head -1)"
+    echo "MET: $(met_version 2>&1 | head -1)"
+    echo "METplus: $(run_metplus.py --version 2>&1 | head -1 || echo 'Not found')"
+} | tee -a $LOG_FILE
+
+echo -e "\n=== FINAL ENVIRONMENT ==="
+echo "PATH: $PATH" | tee -a $LOG_FILE
+echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH" | tee -a $LOG_FILE
+
+set +x
+
+### 6. RUN PREP STEP ###
+# Add your actual prep step commands here
+# Example:
+# prep_script.sh --config global_det_prep.conf
+
+echo "Prep step completed at $(date)" | tee -a $LOG_FILE
 
 module list
 
