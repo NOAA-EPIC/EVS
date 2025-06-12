@@ -1,3 +1,0 @@
-mpiifort -g -O2 -mkl -free -O2 -convert big_endian -mkl -free ecm_gfs_look_alike_new.f90 -L/lib -lw3emc -L/lib -lbacio -o ecm_gfs_look_alike_new
-make: mpiifort: No such file or directory
-make: *** [makefile:9: ecm_gfs_look_alike_new] Error 127
