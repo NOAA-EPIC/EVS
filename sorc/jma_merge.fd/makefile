@@ -1,6 +1,6 @@
 SRCS=jma_merge.f90
 CMD=jma_merge
-FFLAGS += -O2 -convert big_endian -mkl
+FFLAGS += -O2 -fconvert=big-endian 
 DEBUG=-check all -ftrapuv
 LIBS=-L${LIBDIRW3EMC} -l${W3EMCLIB} -L${LIBDIRBACIO} -l${BACIOLIB}
 BINDIR=${EXECevs}

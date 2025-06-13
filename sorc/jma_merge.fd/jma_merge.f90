@@ -20,7 +20,8 @@ character*1000  :: argument    ! space for command-line argument
 integer       :: jpds(200), jgds(200)
 integer       :: kpds(200), kgds(200)
 
-nargs = iargc()              ! iargc() - number of arguments
+!nargs = iargc()              ! iargc() - number of arguments
+nargs = COMMAND_ARGUMENT_COUNT()
 if (nargs.lt.3) then
    write(*,*) 'usage : postjma.x inputn inputs output'
    stop

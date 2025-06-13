@@ -1,6 +1,6 @@
 SRCS=ecm_gfs_look_alike_new.f90
 CMD=ecm_gfs_look_alike_new
-FFLAGS += -O2 -convert big_endian -mkl -free
+FFLAGS += -O2 -fconvert=big-endian  
 DEBUG=-check all -ftrapuv
 LIBS=-L${LIBDIRW3EMC} -l${W3EMCLIB} -L${LIBDIRBACIO} -l${BACIOLIB}
 BINDIR=${EXECevs}
