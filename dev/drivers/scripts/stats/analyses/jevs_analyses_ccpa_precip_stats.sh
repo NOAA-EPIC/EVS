@@ -4,7 +4,7 @@
 #PBS -S /bin/bash
 #PBS -q "dev"
 #PBS -A VERF-DEV
-#PBS -l walltime=00:30:00
+#PBS -l walltime=00:10:00
 #PBS -l place=shared,select=1:ncpus=1:mem=10GB
 #PBS -l debug=true
  
@@ -48,7 +48,6 @@ export job=${PBS_JOBNAME:-jevs_${MODELNAME}_${VERIF_CASE}_${STEP}}
 export jobid=$job.${PBS_JOBID:-$$}
 
 export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/${NET}/${evs_ver_2d}
-export EVSINccpa=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/${NET}/${evs_ver_2d}/prep/cam
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/${NET}/${evs_ver_2d}
 
 export vhr

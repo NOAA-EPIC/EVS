@@ -45,13 +45,13 @@ python $USHevs/cam/cam_create_child_workdirs.py
 export err=$?; err_chk
 
 # Run All CAM snowfall/plots Jobs
-chmod u+x ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/*
-ncount_job=$(ls -l ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/job* |wc -l)
+chmod u+x ${DATA}/${VERIF_CASE}/plotting_job_scripts/*
+ncount_job=$(ls -l ${DATA}/${VERIF_CASE}/plotting_job_scripts/job* 2>/dev/null |wc -l)
 nc=1
 if [ $USE_CFP = YES ]; then
-    ncount_poe=$(ls -l ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/poe* |wc -l)
+    ncount_poe=$(ls -l ${DATA}/${VERIF_CASE}/plotting_job_scripts/poe* |wc -l)
     while [ $nc -le $ncount_poe ]; do
-        poe_script=${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/poe_jobs${nc}
+        poe_script=${DATA}/${VERIF_CASE}/plotting_job_scripts/poe_jobs${nc}
         chmod 775 $poe_script
         export MP_PGMMODEL=mpmd
         export MP_CMDFILE=${poe_script}
@@ -68,17 +68,22 @@ if [ $USE_CFP = YES ]; then
     done
 else
     while [ $nc -le $ncount_job ]; do
-        ${DATA}/${VERIF_CASE}/${STEP}/plotting_job_scripts/job${nc}
-        export err=$?; err_chk
+        job_file="${DATA}/${VERIF_CASE}/plotting_job_scripts/job${nc}"
+        if [ -f "$job_file" ]; then
+            $job_file
+            export err=$?; err_chk
+        fi
         nc=$((nc+1))
     done
 fi
 
 # Copy Plots Output to Main Directory
+shopt -s nullglob
 for CHILD_DIR in ${DATA}/${VERIF_CASE}/out/workdirs/*; do
     cp -ruv $CHILD_DIR/* ${DATA}/${VERIF_CASE}/out/.
     export err=$?; err_chk
 done
+shopt -u nullglob
 
 # Cat the plotting log files
 log_dir="$DATA/$VERIF_CASE/out/logs"
@@ -97,14 +102,14 @@ if [ -d $log_dir ]; then
 fi
 
 # Tar and Copy output files to EVS COMOUT directory
-find ${DATA}/${VERIF_CASE}/* -name "*.png" -type f -not -path "*workdirs*" -print | tar -cvf ${DATA}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.v${VDATE}.tar --transform='s#.*/##' -T -
+find ${DATA}/${VERIF_CASE}/* -name "*.png" -type f -not -path "*workdirs*" -print | tar -cvf ${DATA}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${EVAL_PERIOD}.v${VDATE}.tar --transform='s#.*/##' -T -
 
 if [ $SENDCOM = YES ]; then
-    FILE=${DATA}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.v${VDATE}.tar
+    FILE=${DATA}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${EVAL_PERIOD}.v${VDATE}.tar
     if [ -s "$FILE" ]; then
        cp -v ${FILE} ${COMOUTplots}/.
     fi
 fi
 if [ $SENDDBN = YES ]; then
-    $DBNROOT/bin/dbn_alert MODEL EVS_RZDM $job ${COMOUTplots}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.v${VDATE}.tar
+    $DBNROOT/bin/dbn_alert MODEL EVS_RZDM $job ${COMOUTplots}/${NET}.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${EVAL_PERIOD}.v${VDATE}.tar
 fi
